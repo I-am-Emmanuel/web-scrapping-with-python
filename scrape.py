@@ -2,5 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 
 response = requests.get('https://news.ycombinator.com/news')
-
-print(response.text)
+soupobj = BeautifulSoup(response.text, 'html.parser')
+print(soupobj.find_all('div'))
+print(soupobj.find('a'))
