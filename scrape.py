@@ -7,12 +7,12 @@ page2 = requests.get('https://news.ycombinator.com/news?p=2')
 soupobj1 = BeautifulSoup(page1.text, 'html.parser')
 soupobj2 = BeautifulSoup(page2.text, 'html.parser')
 
-link1 = soupobj.select('.titleline')
+link1 = soupobj1.select('.titleline')
 # vote = soupobj.select('.score')
-subtext1 = soupobj.select('.subtext')
-link2 = soupobj.select('.titleline')
+subtext1 = soupobj1.select('.subtext')
+link2 = soupobj2.select('.titleline')
 # vote = soupobj.select('.score')
-subtext2 = soupobj.select('.subtext')
+subtext2 = soupobj2.select('.subtext')
 
 mega_link = link1 + link2
 mega_subtext = subtext1 + subtext2
