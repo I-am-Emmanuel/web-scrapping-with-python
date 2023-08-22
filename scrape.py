@@ -3,10 +3,23 @@ from bs4 import BeautifulSoup
 
 response = requests.get('https://news.ycombinator.com/news')
 soupobj = BeautifulSoup(response.text, 'html.parser')
-links = soupobj.select('.titleline')
-votes = soupobj.select('.score')
+link = soupobj.select('.titleline')
+vote = soupobj.select('.score')
 
-print(links)
+def create_custome_hn(links, votes):
+    hack_news = []
+    for index, item in enumerate(links):
+        title = links[index].getText()
+        href = links[index].get('href', None)
+        hack_news.append({'title': title, 'href': href})
+
+    return hack_news
+
+
+print(create_custome_hn(links=link, votes = vote))
+
+
+# print(hack_news)
 
 
 
