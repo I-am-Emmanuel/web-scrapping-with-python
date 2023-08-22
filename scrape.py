@@ -2,11 +2,41 @@ import requests
 from bs4 import BeautifulSoup
 import pprint
 
-response = requests.get('https://news.ycombinator.com/news')
-soupobj = BeautifulSoup(response.text, 'html.parser')
-link = soupobj.select('.titleline')
-vote = soupobj.select('.score')
-subtext = soupobject.select('.subtext')
+page1 = requests.get('https://news.ycombinator.com/news')
+page2 = requests.get('https://news.ycombinator.com/news?p=2')
+soupobj1 = BeautifulSoup(page1.text, 'html.parser')
+soupobj2 = BeautifulSoup(page2.text, 'html.parser')
+
+link1 = soupobj.select('.titleline')
+# vote = soupobj.select('.score')
+subtext1 = soupobj.select('.subtext')
+link2 = soupobj.select('.titleline')
+# vote = soupobj.select('.score')
+subtext2 = soupobj.select('.subtext')
+
+mega_link = link1 + link2
+mega_subtext = subtext1 + subtext2
+
+
+def sorted_hack_news_list(hknlist:list) -> list:
+    return sorted(hknlist, key=lambda k: k['votes'], reverse=True)
+
+def create_custome_hackn(links, subtext):
+    hack_news = []
+    for index, item in enumerate(links):
+        title = item.getText()
+        href = item.get('href', None)
+        vote = subtext[index].select('.score')
+        if len(vote):
+            point = int(vote[0].getText().replace(' points', ''))
+            if point > 99:
+                hack_news.append({'title': title, 'href': href, 'votes': point})
+
+    return sorted_hack_news_list(hknlist=hack_news)
+ 
+
+pprint.pprint(create_custome_hackn(links=mega_link, subtext = mega_subtext))
+
 
 # def create_custome_hn(links, votes):
 #     hack_news = []
@@ -18,22 +48,7 @@ subtext = soupobject.select('.subtext')
 #             hack_news.append({'title': title, 'href': href})
 
 #     return hack_news
-
-def create_custome_hackn(links, subtext):
-    hack_news = []
-    for index, item in enumerate(links):
-        title = item[index].getText()
-        href = item[index].get('href', None)
-        vote = subtext[index].select('.score')
-        if len(vote):
-            point = int(vote[0].getText().replace(' points', ''))
-            if point > 99:
-                hack_news.append({'title': title, 'href': href, 'votes': point})
-
-    return hack_news
- 
-
-pprint.pprint(create_custome_hn(links=link, votes = subtext))
+# pprint.pprint(create_custome_hn(links=link, votes = vote))
 
 
 # print(hack_news)
